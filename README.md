@@ -1,5 +1,15 @@
 # espectograma
 
+
+spectrogram is valid to delve into the stochastic variation in instantaneous power. 
+A spectrogram is an effective visual tool for analyzing how the frequencies of a signal vary over 
+time, allowing you to identify patterns and changes in power. This can help in understanding the 
+variability and distribution of power output during different phases of a ride, highlighting 
+periods of high intensity and other significant events. By representing the intensity of different 
+frequencies in colors, the spectrogram provides valuable insights into the temporal dynamics of 
+power fluctuations, which is essential for optimizing performance and training strategies.
+
+
 El espectrograma es una herramienta visual utilizada para analizar cómo varían 
 las frecuencias de una señal a lo largo del tiempo. Es especialmente útil en el 
 análisis de señales complejas como audio, datos fisiológicos y registros de 
