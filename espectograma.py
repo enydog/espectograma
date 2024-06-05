@@ -1,12 +1,3 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy.signal import spectrogram
-from fitparse import FitFile
-from pandas.plotting import autocorrelation_plot
-import pandas as pd
-import matplotlib.dates as mdates
-from datetime import datetime, timedelta
-
 """
 Cómo observar e interpretar el espectrograma
 
@@ -38,6 +29,15 @@ entrenamientos y estrategias de carrera.
 """
 
 
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import spectrogram
+from fitparse import FitFile
+from pandas.plotting import autocorrelation_plot
+import pandas as pd
+import matplotlib.dates as mdates
+from datetime import datetime, timedelta
+
 # Cargar el archivo .FIT y extraer el campo "power"
 def extract_power_from_fit(file_path):
     fitfile = FitFile(file_path)
@@ -59,8 +59,20 @@ power = extract_power_from_fit(fit_file_path)
 # Convertir la lista de datos de potencia a un numpy array
 power = np.array(power)
 
-# Generar el espectrograma con una ventana más pequeña para mejorar la resolución
-f, t, Sxx = spectrogram(power, fs=1, nperseg=256, noverlap=128)  # Ajustar nperseg y noverlap para mejorar la resolución
+# Generar el espectrograma con diferentes parámetros para mejorar la resolución
+# Ejemplo 1: Alta resolución frecuencial
+nperseg1, noverlap1 = 512, 256
+
+# Ejemplo 2: Balance entre resolución temporal y frecuencial
+nperseg2, noverlap2 = 256, 128
+
+# Ejemplo 3: Alta resolución temporal
+nperseg3, noverlap3 = 128, 64
+
+# Escoger uno de los ejemplos
+nperseg, noverlap = nperseg2, noverlap2
+
+f, t, Sxx = spectrogram(power, fs=1, nperseg=nperseg, noverlap=noverlap)
 
 # Convertir el tiempo a formato datetime
 start_time = datetime(1, 1, 1)
@@ -79,11 +91,11 @@ plt.clim(0, np.percentile(Sxx, 95))  # Escala de color hasta el percentil 95 par
 
 # Mejorar la escala Y para que sea logarítmica
 plt.yscale('log')
-plt.ylim([0.1, 0.2])  # Ajustar los límites del eje Y para reducir el área blanca
+plt.ylim([0.1, 0.5])  # Ajustar los límites del eje Y para reducir el área blanca
 
 # Formato del eje X
 plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
-plt.gca().xaxis.set_major_locator(mdates.HourLocator(interval=1))
+plt.gca().xaxis.set_major_locator(mdates.MinuteLocator(interval=10))
 plt.gcf().autofmt_xdate()
 
 # Resaltar las zonas de esfuerzos altos
